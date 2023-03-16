@@ -1,4 +1,4 @@
-package co.edu.uniquindio.homebliss.model.entities;
+package co.edu.uniquindio.homebliss.model;
 
 
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String name;

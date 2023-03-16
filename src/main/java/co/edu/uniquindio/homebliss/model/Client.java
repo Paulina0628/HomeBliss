@@ -1,11 +1,13 @@
-package co.edu.uniquindio.homebliss.model.entities;
+package co.edu.uniquindio.homebliss.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -14,16 +16,18 @@ import java.io.Serializable;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Client extends User implements Serializable {
 
-    @Column(nullable = false)
+    @Column(length = 50)
+    @NotNull
     private String lastname;
 
-    @Column(nullable = false, unique = true)
-    private String cc;
-
-    @Column(nullable = false)
+    @Column(length = 12)
+    @NotNull
     private String phone;
 
-    @Column(nullable = false)
+    @Column(length = 50)
+    @NotNull
     private String address;
 
+    @ManyToMany(mappedBy = "favorites")
+    private List<Product> favorites;
 }

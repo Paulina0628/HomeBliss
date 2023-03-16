@@ -1,10 +1,12 @@
-package co.edu.uniquindio.homebliss.model.entities;
+package co.edu.uniquindio.homebliss.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,26 +17,32 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private int id;
+    private Integer id;
 
-    @Column(nullable = false)
-    private String img;
-
-    @Column(nullable = false)
+    @Column(length = 100)
+    @NotNull
     private String name;
 
-    @Column(nullable = false)
+    @NotNull
     @Lob
     private String description;
 
-    @Column(nullable = false)
+    @Column(scale = 2)
+    @NotNull
     private Double price;
 
-    @Column(nullable = false)
+    @NotNull
     private int stock;
 
-    @OneToOne(mappedBy = "product")
-    private Post post;
+    @ElementCollection
+    @NotNull
+    private List<String> images;
+
+    @Enumerated(EnumType.ORDINAL)
+    private Category categories;
+
+    @ManyToMany
+    private List<Client> favorites;
 
 
     public Product(){

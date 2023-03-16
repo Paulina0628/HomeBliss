@@ -1,4 +1,4 @@
-package co.edu.uniquindio.homebliss.model.entities;
+package co.edu.uniquindio.homebliss.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +15,7 @@ public class Post implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private int id;
+    private Integer id;
 
     @Column(name = "limit_date", nullable = false)
     private Date limitDate;
