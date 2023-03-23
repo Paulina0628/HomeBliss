@@ -5,15 +5,9 @@ import co.edu.uniquindio.homebliss.dto.ProductGetDTO;
 import co.edu.uniquindio.homebliss.model.Category;
 import co.edu.uniquindio.homebliss.model.Product;
 import co.edu.uniquindio.homebliss.model.State;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
-@AllArgsConstructor
-@Setter
-@Getter
 public interface ProductService {
 
     int createProduct(ProductDTO productDTO);

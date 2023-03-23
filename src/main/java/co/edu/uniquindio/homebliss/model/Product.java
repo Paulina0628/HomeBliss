@@ -6,11 +6,12 @@ import lombok.*;
 
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@AllArgsConstructor
+@Getter @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Product implements Serializable {
 
@@ -29,10 +30,19 @@ public class Product implements Serializable {
 
     @Column(scale = 2)
     @NotNull
-    private Double price;
+    private float price;
 
     @NotNull
     private int stock;
+
+    @NotNull
+    private Boolean isActive;
+
+    @NotNull
+    private Date created_date;
+
+    @NotNull
+    private Date limit_date;
 
     @ElementCollection
     @NotNull
