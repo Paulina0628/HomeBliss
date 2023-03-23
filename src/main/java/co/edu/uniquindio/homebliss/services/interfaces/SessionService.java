@@ -1,4 +1,4 @@
-package co.edu.uniquindio.homebliss.services;
+package co.edu.uniquindio.homebliss.services.interfaces;
 
 import co.edu.uniquindio.homebliss.dto.SessionDTO;
 import co.edu.uniquindio.homebliss.dto.TokenDTO;

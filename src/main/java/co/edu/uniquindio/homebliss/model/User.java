@@ -3,11 +3,14 @@ package co.edu.uniquindio.homebliss.model;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "User")
+@Getter @Setter
 public class User implements Serializable {
 
     @Id
@@ -15,13 +18,13 @@ public class User implements Serializable {
     @EqualsAndHashCode.Include
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String password;
 
     @Column(nullable = false)

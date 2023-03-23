@@ -9,8 +9,9 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
-@MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity
+/*@MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)*/
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
