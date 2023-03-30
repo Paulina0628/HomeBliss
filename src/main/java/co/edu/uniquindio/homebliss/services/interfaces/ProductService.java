@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    int createProduct(ProductDTO productDTO);
+    int createProduct(ProductDTO productDTO) throws Exception;
 
     int updateProduct(int productCode, ProductDTO productDTO);
 

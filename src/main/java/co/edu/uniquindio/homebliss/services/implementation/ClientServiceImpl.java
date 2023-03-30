@@ -1,6 +1,7 @@
 package co.edu.uniquindio.homebliss.services.implementation;
 
 import co.edu.uniquindio.homebliss.dto.ClientDTO;
+import co.edu.uniquindio.homebliss.dto.ClientGetDTO;
 import co.edu.uniquindio.homebliss.model.Client;
 import co.edu.uniquindio.homebliss.repositories.ClientRepository;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
@@ -16,29 +17,28 @@ public class ClientServiceImpl implements ClientService {
     private ClientRepository clientRepository;
 
     @Override
-    public int createClient(ClientDTO clientDTO) throws Exception{
-        Client client = clientRepository.searchClient(clientDTO.getEmail());
+    public int createClient(ClientDTO clientDTO) throws Exception {
 
-        if(client != null){
-            throw new Exception("El correo " + clientDTO.getEmail() + " ya existe");
+        Client searched = clientRepository.searchClient(clientDTO.getEmail());
+
+        if(searched != null){
+            throw new Exception("El correo " + clientDTO.getEmail() + " ya está en uso");
         }
 
-        return 0;
+        Client client = toClient(clientDTO);
+
+        return clientRepository.save(client).getId();
     }
 
     @Override
-    public int updateClient(int clientCode, ClientDTO clientDTO) throws Exception {
+    public ClientGetDTO updateClient(int clientCode, ClientDTO clientDTO) throws Exception {
+
         validateClient(clientCode);
 
-        Optional<Client> finded = clientRepository.findById(clientCode);
-        Client client = finded.get();
+        Client client = toClient(clientDTO);
+        client.setId(clientCode);
 
-        client.setName(clientDTO.getName());
-        client.setEmail(clientDTO.getEmail());
-        client.setPassword(clientDTO.getPassword());
-        client.setState(clientDTO.getState());
-
-        return 0;
+        return toClientDTO(clientRepository.save(client));
     }
 
     @Override
@@ -49,14 +49,18 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDTO getClient(int clientCode) throws Exception {
-        validateClient(clientCode);
+    public ClientGetDTO getClientDTO(int clientCode) throws Exception {
+        return toClientDTO(getClient(clientCode));
+    }
 
-        Client client = clientRepository.findById(clientCode).get();
+    @Override
+    public Client getClient(int clientCode) throws Exception {
+        Optional<Client> client = clientRepository.findById(clientCode);
 
-        ClientDTO clientDTO = toDTO(client);
-
-        return clientDTO;
+        if(client.isEmpty() ){
+            throw new Exception("El código "+ clientCode +" no está asociado a ningún usuario");
+        }
+        return client.get();
     }
 
     private void validateClient(int clientCode) throws Exception{
@@ -64,23 +68,32 @@ public class ClientServiceImpl implements ClientService {
         Boolean client = clientRepository.existsById(clientCode);
 
         if(!client){
-            throw new Exception("El cliente no existe");
+            throw new Exception("El código "+ clientCode +" no está asociado a ningún usuario");
         }
 
     }
 
-    private ClientDTO toDTO(Client client){
+    private ClientGetDTO toClientDTO(Client client){
 
-        ClientDTO clientDTO = new ClientDTO(
+        ClientGetDTO clientGetDTO = new ClientGetDTO(
+                client.getId(),
                 client.getName(),
-                client.getLastname(),
-                client.getPhone(),
-                client.getAddress(),
                 client.getEmail(),
-                client.getPassword(),
-                client.getState()
-        );
+                client.getAddress(),
+                client.getPhone());
 
-        return clientDTO;
+        return clientGetDTO;
+    }
+
+    private Client toClient(ClientDTO clientDTO){
+
+        Client client = new Client();
+        client.setName( clientDTO.getName() );
+        client.setEmail( clientDTO.getEmail() );
+        client.setAddress( clientDTO.getAddress() );
+        client.setPhone( clientDTO.getPhone() );
+        client.setPassword( clientDTO.getPassword() );
+
+        return client;
     }
 }
