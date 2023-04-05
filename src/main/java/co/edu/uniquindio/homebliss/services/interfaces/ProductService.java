@@ -14,6 +14,10 @@ public interface ProductService {
 
     int updateProduct(int productCode, ProductDTO productDTO);
 
+    int updateStock(int productCode, int stock);
+
+    int updateState(int productCode, State state);
+
     int deleteProduct(int productCode);
 
     ProductGetDTO getProduct(int productCode);

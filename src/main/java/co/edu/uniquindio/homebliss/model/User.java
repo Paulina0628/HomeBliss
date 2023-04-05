@@ -8,8 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "User")
+@MappedSuperclass
 @Getter @Setter
 public class User implements Serializable {
 

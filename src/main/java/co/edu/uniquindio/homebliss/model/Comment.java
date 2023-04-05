@@ -2,39 +2,34 @@ package co.edu.uniquindio.homebliss.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
-@Entity
-@AllArgsConstructor
+@MappedSuperclass
 @Getter @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class PurchaseDetail implements Serializable {
+public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private int id;
+    private Integer id;
 
     @NotNull
-    @PositiveOrZero
-    private int amount;
+    @Lob
+    private String message;
 
     @NotNull
-    @Column(scale = 2)
-    @PositiveOrZero
-    private float product_price;
+    @CreationTimestamp
+    private Timestamp created_date;
 
     @ManyToOne
-    private Purchase purchase;
+    private Client client;
 
     @ManyToOne
     private Product product;
-
-    public PurchaseDetail() {}
 }

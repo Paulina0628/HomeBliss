@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
         product.setSeller( clientService.getClient( productDTO.getSellerCode() ) );
         product.setImages(productDTO.getImages() );
         product.setCategories(productDTO.getCategories());
-        product.setIsActive( Activo.INACTIVO );
+        product.setIsActive( false );
         product.setCreated_date(LocalDateTime.now());
         product.setLimit_date(LocalDateTime.now().plusDays(60));
 
@@ -41,6 +41,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int updateProduct(int productCode, ProductDTO productDTO) {
+        return 0;
+    }
+
+    @Override
+    public int updateStock(int productCode, int stock) {
+        return 0;
+    }
+
+    @Override
+    public int updateState(int productCode, State state) {
         return 0;
     }
 
@@ -57,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductGetDTO> getUserProducts(int userCode) {
 
-        List<Product> list = productRepository.listarProductosUsuario(userCode);
+        List<Product> list = productRepository.getUserProducts(userCode);
         List<ProductGetDTO> answer = new ArrayList<>();
 
         for(Product p : list){
@@ -84,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductGetDTO> getProductsByName(String name) {
-        List<Product> list = productRepository.listarProductosNombre(name);
+        List<Product> list = productRepository.getProductByName(name);
         List<ProductGetDTO> answer = new ArrayList<>();
 
         for(Product p : list){
@@ -108,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
                 product.getDescription(),
                 product.getStock(),
                 product.getPrice(),
-                product.getSeller().getCodigo(),
+                product.getSeller().getId(),
                 product.getImages(),
                 product.getCategories()
         );

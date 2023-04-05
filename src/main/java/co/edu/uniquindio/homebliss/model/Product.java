@@ -2,11 +2,15 @@ package co.edu.uniquindio.homebliss.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,30 +34,48 @@ public class Product implements Serializable {
 
     @Column(scale = 2)
     @NotNull
+    @PositiveOrZero
     private float price;
 
     @NotNull
+    @PositiveOrZero
     private int stock;
 
     @NotNull
     private Boolean isActive;
 
     @NotNull
-    private Date created_date;
+    private LocalDateTime created_date;
 
     @NotNull
-    private Date limit_date;
+    private LocalDateTime limit_date;
 
+    @NotNull
     @ElementCollection
+    private List<String> images = new ArrayList<>();
+
     @NotNull
-    private List<String> images;
-
     @Enumerated(EnumType.ORDINAL)
-    private Category categories;
+    private List<Category> categories;
 
-    @ManyToMany
-    private List<Client> favorites;
+    @ManyToMany(mappedBy = "favorites")
+    private List<Client> clientFavorite;
 
+    @NotNull
+    @ManyToOne
+    private Client seller;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductModerator> productsModerator;
+
+    @OneToMany(mappedBy = "product")
+    private List<PurchaseDetail> purchaseDetails;
+
+    @OneToMany(mappedBy = "product")
+    private List<Qualification> qualifications;
+
+    @OneToMany(mappedBy = "product")
+    private List<Question> questions;
 
     public Product(){
         super();

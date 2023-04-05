@@ -5,12 +5,14 @@ import co.edu.uniquindio.homebliss.dto.ClientGetDTO;
 import co.edu.uniquindio.homebliss.model.Client;
 import co.edu.uniquindio.homebliss.repositories.ClientRepository;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
     @Autowired
@@ -89,10 +91,12 @@ public class ClientServiceImpl implements ClientService {
 
         Client client = new Client();
         client.setName( clientDTO.getName() );
+        client.setLastname(clientDTO.getLastname());
         client.setEmail( clientDTO.getEmail() );
         client.setAddress( clientDTO.getAddress() );
         client.setPhone( clientDTO.getPhone() );
         client.setPassword( clientDTO.getPassword() );
+        client.setState(clientDTO.getState());
 
         return client;
     }

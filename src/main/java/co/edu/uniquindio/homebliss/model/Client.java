@@ -2,6 +2,7 @@ package co.edu.uniquindio.homebliss.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,10 +11,8 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-/*@MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)*/
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Client extends User implements Serializable {
 
@@ -29,6 +28,22 @@ public class Client extends User implements Serializable {
     @NotNull
     private String address;
 
-    @ManyToMany(mappedBy = "favorites")
+    @ManyToMany
     private List<Product> favorites;
+
+    @OneToMany(mappedBy = "seller")
+    private List<Product> products;
+
+    @OneToMany(mappedBy = "client")
+    private List<Purchase> purchases;
+
+    @OneToMany(mappedBy = "client")
+    private List<Question> questions;
+
+    @OneToMany(mappedBy = "client")
+    private List<Qualification> qualifications;
+
+    public Client() {
+
+    }
 }

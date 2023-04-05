@@ -1,12 +1,12 @@
 package co.edu.uniquindio.homebliss.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Entity
 @AllArgsConstructor
@@ -18,6 +18,24 @@ public class ProductModerator implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
+
+    @NotNull
+    @Lob
+    private String reason;
+
+    @NotNull
+    @CreationTimestamp
+    private Timestamp date;
+
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    private State state;
+
+    @ManyToOne
+    private Product product;
+
+    @ManyToOne
+    private Moderator moderator;
 
     public ProductModerator(){
         super();
