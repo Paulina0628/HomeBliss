@@ -90,12 +90,12 @@ public class ClientServiceImpl implements ClientService {
     private Client toClient(ClientDTO clientDTO){
 
         Client client = new Client();
-        client.setName( clientDTO.getName() );
+        client.setName(clientDTO.getName());
         client.setLastname(clientDTO.getLastname());
-        client.setEmail( clientDTO.getEmail() );
-        client.setAddress( clientDTO.getAddress() );
-        client.setPhone( clientDTO.getPhone() );
-        client.setPassword( clientDTO.getPassword() );
+        client.setEmail(clientDTO.getEmail());
+        client.setAddress(clientDTO.getAddress());
+        client.setPhone(clientDTO.getPhone());
+        client.setPassword(clientDTO.getPassword());
         client.setState(clientDTO.getState());
 
         return client;
