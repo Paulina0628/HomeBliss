@@ -8,6 +8,7 @@ import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -55,7 +56,7 @@ public class ClientServiceImpl implements ClientService {
         return toClientDTO(getClient(clientCode));
     }
 
-    @Override
+    @Transactional(readOnly = true)
     public Client getClient(int clientCode) throws Exception {
         Optional<Client> client = clientRepository.findById(clientCode);
 

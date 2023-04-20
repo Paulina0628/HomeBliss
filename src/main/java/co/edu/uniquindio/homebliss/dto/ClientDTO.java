@@ -1,5 +1,6 @@
 package co.edu.uniquindio.homebliss.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class ClientDTO {
     @NotNull(message = "El correo no puede ser null")
     @NotBlank(message = "El correo no puede estar vacía")
     @Length(max = 100, message = "El correo debe ser de máximo 100 caracteres")
+    @Email(message = "El email no es válido")
     private String email;
 
     @NotNull(message = "La contraseña no puede ser null")
