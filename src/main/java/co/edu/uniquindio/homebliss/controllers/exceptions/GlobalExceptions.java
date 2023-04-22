@@ -1,6 +1,7 @@
 package co.edu.uniquindio.homebliss.controllers.exceptions;
 
 import co.edu.uniquindio.homebliss.dto.MessageDTO;
+import co.edu.uniquindio.homebliss.services.exceptions.AttributeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

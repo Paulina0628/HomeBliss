@@ -1,15 +1,20 @@
 package co.edu.uniquindio.homebliss.services.implementation;
 
-import co.edu.uniquindio.homebliss.dto.ClientDTO;
+import co.edu.uniquindio.homebliss.dto.ClientPostDTO;
 import co.edu.uniquindio.homebliss.dto.ClientGetDTO;
 import co.edu.uniquindio.homebliss.model.Client;
+import co.edu.uniquindio.homebliss.model.UserStatus;
 import co.edu.uniquindio.homebliss.repositories.ClientRepository;
+import co.edu.uniquindio.homebliss.services.exceptions.AttributeException;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,36 +24,41 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
-    public int createClient(ClientDTO clientDTO) throws Exception {
+    public int createClient(ClientPostDTO clientPostDTO) throws Exception {
 
-        Client searched = clientRepository.searchClient(clientDTO.getEmail());
-
-        if(searched != null){
-            throw new Exception("El correo " + clientDTO.getEmail() + " ya está en uso");
+        if(!isAvailable(clientPostDTO.getEmail())) {
+            throw new AttributeException("El correo " + clientPostDTO.getEmail() + " ya está en uso");
         }
 
-        Client client = toClient(clientDTO);
+        Client client = toClient(clientPostDTO);
 
         return clientRepository.save(client).getId();
     }
 
     @Override
-    public ClientGetDTO updateClient(int clientCode, ClientDTO clientDTO) throws Exception {
+    public ClientGetDTO updateClient(int clientCode, ClientPostDTO clientPostDTO) throws Exception {
 
-        validateClient(clientCode);
+        if(!validateClient(clientCode)){
+            throw new Exception("El código " + clientCode + " no está asociado a ningún usuario");
+        }
 
-        Client client = toClient(clientDTO);
+        Client client = toClient(clientPostDTO);
         client.setId(clientCode);
 
         return toClientDTO(clientRepository.save(client));
     }
 
     @Override
-    public int deleteClient(int clientCode) throws Exception {
-        validateClient(clientCode);
-        clientRepository.deleteById(clientCode);
-        return clientCode;
+    public void deleteClient(int clientCode) throws Exception {
+
+        Client client = getClient(clientCode);
+        client.setStatus(UserStatus.INACTIVO);
+
+        clientRepository.save(client);
     }
 
     @Override
@@ -61,22 +71,22 @@ public class ClientServiceImpl implements ClientService {
         Optional<Client> client = clientRepository.findById(clientCode);
 
         if(client.isEmpty() ){
-            throw new Exception("El código "+ clientCode +" no está asociado a ningún usuario");
+            throw new Exception("El código " + clientCode + " no está asociado a ningún usuario");
         }
         return client.get();
     }
 
-    private void validateClient(int clientCode) throws Exception{
-
-        Boolean client = clientRepository.existsById(clientCode);
-
-        if(!client){
-            throw new Exception("El código "+ clientCode +" no está asociado a ningún usuario");
-        }
-
+    @Override
+    public List<ClientGetDTO> getClients() {
+        return toClientDTOList(clientRepository.findAll());
     }
 
-    private ClientGetDTO toClientDTO(Client client){
+    public boolean validateClient(int clientCode) throws Exception{
+        Optional<Client> client = clientRepository.findById(clientCode);
+        return client.isEmpty();
+    }
+
+    public ClientGetDTO toClientDTO(Client client){
 
         ClientGetDTO clientGetDTO = new ClientGetDTO(
                 client.getId(),
@@ -88,17 +98,32 @@ public class ClientServiceImpl implements ClientService {
         return clientGetDTO;
     }
 
-    private Client toClient(ClientDTO clientDTO){
+    public Client toClient(ClientPostDTO clientPostDTO){
 
         Client client = new Client();
-        client.setName(clientDTO.getName());
-        client.setLastname(clientDTO.getLastname());
-        client.setEmail(clientDTO.getEmail());
-        client.setAddress(clientDTO.getAddress());
-        client.setPhone(clientDTO.getPhone());
-        client.setPassword(clientDTO.getPassword());
-        client.setState(clientDTO.getState());
+
+        client.setName(clientPostDTO.getName());
+        client.setLastname(clientPostDTO.getLastname());
+        client.setEmail(clientPostDTO.getEmail());
+        client.setAddress(clientPostDTO.getAddress());
+        client.setPhone(clientPostDTO.getPhone());
+        client.setPassword(passwordEncoder.encode(clientPostDTO.getPassword()));
 
         return client;
+    }
+
+    public List<ClientGetDTO> toClientDTOList (List<Client> clients){
+        List<ClientGetDTO> answer = new ArrayList<>();
+
+        for(Client client : clients){
+            answer.add(toClientDTO(client));
+        }
+
+        return answer;
+    }
+
+    public boolean isAvailable(String email){
+        Optional<Client> client = clientRepository.findByEmail(email);
+        return client.isEmpty();
     }
 }

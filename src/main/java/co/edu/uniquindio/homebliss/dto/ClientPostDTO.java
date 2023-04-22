@@ -1,28 +1,27 @@
 package co.edu.uniquindio.homebliss.dto;
 
+import co.edu.uniquindio.homebliss.model.UserStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.DialectOverride;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @AllArgsConstructor
 @Getter
 @Setter
-public class ClientDTO {
+public class ClientPostDTO {
 
     @NotNull(message = "El nombre no puede ser null")
     @NotBlank(message = "El nombre no puede estar vacía")
-    @Length(max = 50, message = "El nombre debe ser de máximo 50 caracteres")
+    @Length(max = 100, message = "El nombre debe ser de máximo 50 caracteres")
     private String name;
 
     @NotNull(message = "El apellido no puede ser null")
     @NotBlank(message = "El apellido no puede estar vacía")
-    @Length(max = 50, message = "El apellido debe ser de máximo 50 caracteres")
+    @Length(max = 100, message = "El apellido debe ser de máximo 50 caracteres")
     private String lastname;
 
     @NotNull(message = "El teléfono no puede ser null")
@@ -32,12 +31,12 @@ public class ClientDTO {
 
     @NotNull(message = "La dirección no puede ser null")
     @NotBlank(message = "La dirección no puede estar vacía")
-    @Length(max = 50, message = "La dirección debe ser de máximo 50 caracteres")
+    @Length(max = 100, message = "La dirección debe ser de máximo 50 caracteres")
     private String address;
 
     @NotNull(message = "El correo no puede ser null")
     @NotBlank(message = "El correo no puede estar vacía")
-    @Length(max = 100, message = "El correo debe ser de máximo 100 caracteres")
+    @Length(max = 150, message = "El correo debe ser de máximo 100 caracteres")
     @Email(message = "El email no es válido")
     private String email;
 
@@ -48,5 +47,5 @@ public class ClientDTO {
 
     @NotNull(message = "El estado no puede ser null")
     @NotBlank(message = "El estado no puede estar vacía")
-    private String state;
+    private UserStatus status;
 }

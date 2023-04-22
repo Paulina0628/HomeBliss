@@ -1,6 +1,6 @@
 package co.edu.uniquindio.homebliss.test;
 
-import co.edu.uniquindio.homebliss.dto.ClientDTO;
+import co.edu.uniquindio.homebliss.dto.ClientPostDTO;
 import co.edu.uniquindio.homebliss.dto.ProductDTO;
 import co.edu.uniquindio.homebliss.model.Category;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
@@ -29,7 +29,7 @@ public class ProductServiceTest {
     @Sql("classpath:dataset.sql" )
     public void createProductTest() throws Exception {
 
-        ClientDTO clientDTO = new ClientDTO("Pepito 1",
+        ClientPostDTO clientPostDTO = new ClientPostDTO("Pepito 1",
                 "Alvarez",
                 "12312312312",
                 "Calle 123",
@@ -38,7 +38,7 @@ public class ProductServiceTest {
                 "Activo");
 
         //El servicio del usuario nos retorna el código con el que quedó en la base de datos
-        int sellerCode = clientService.createClient(clientDTO);
+        int sellerCode = clientService.createClient(clientPostDTO);
 
         //Se crea la colección de imágenes para el producto.
         List<String> images = new ArrayList<>();

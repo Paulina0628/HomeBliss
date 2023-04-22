@@ -1,7 +1,8 @@
 package co.edu.uniquindio.homebliss.test;
 
-import co.edu.uniquindio.homebliss.dto.ClientDTO;
+import co.edu.uniquindio.homebliss.dto.ClientPostDTO;
 import co.edu.uniquindio.homebliss.dto.ClientGetDTO;
+import co.edu.uniquindio.homebliss.model.UserStatus;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,16 +24,16 @@ public class ClientServiceTest {
 
         try{
             //Se crea el usuario con el servicio de crearUsuario
-            ClientDTO clientDTO = new ClientDTO(
+            ClientPostDTO clientPostDTO = new ClientPostDTO(
                     "Pepito 1",
                     "Alvarez",
                     "12312312312",
                     "Calle 123",
                     "pepe1@email.com",
                     "452335",
-                    "Activo");
+                    UserStatus.ACTIVO);
 
-            int code = clientService.createClient(clientDTO);
+            int code = clientService.createClient(clientPostDTO);
 
             //Se espera que si se registra correctamente entonces el servicio no debe retornar 0
             Assertions.assertNotEquals(0, code);
@@ -49,22 +50,22 @@ public class ClientServiceTest {
     public void deleteClientTest() throws Exception{
 
         //Para eliminar el usuario primero se debe crear
-        ClientDTO clientDTO = new ClientDTO(
+        ClientPostDTO clientPostDTO = new ClientPostDTO(
                 "Pepito 1",
                 "Alvarez",
                 "12312312312",
                 "Calle 123",
                 "pepe1@email.com",
                 "452335",
-                "Activo");
+                UserStatus.ACTIVO);
 
-        int code = clientService.createClient(clientDTO);
+        int code = clientService.createClient(clientPostDTO);
 
         //Una vez creado, lo borramos
-        int deletedCode = clientService.deleteClient(code);
+        clientService.deleteClient(code);
 
         //Si intentamos buscar un usuario con el codigo del usuario borrado debemos obtener una excepción indicando que ya no existe
-        Assertions.assertThrows(Exception.class, () -> clientService.getClientDTO(deletedCode));
+        Assertions.assertThrows(Exception.class, () -> clientService.getClientDTO(code));
     }
 
     @Test
@@ -72,25 +73,25 @@ public class ClientServiceTest {
     public void actualizarUsuarioTest() throws Exception{
 
         //Para actualizar el usuario primero se debe crear
-        ClientDTO clientDTO = new ClientDTO(
+        ClientPostDTO clientPostDTO = new ClientPostDTO(
                 "Pepito 1",
                 "Alvarez",
                 "12312312312",
                 "Calle 123",
                 "pepe1@email.com",
                 "452335",
-                "Activo");
+                UserStatus.ACTIVO);
 
-        int newCode = clientService.createClient(clientDTO);
+        int newCode = clientService.createClient(clientPostDTO);
 
         //El servicio de actualizar nos retorna el usuario
-        ClientGetDTO updatedClient = clientService.updateClient(newCode, new ClientDTO("Pepito",
+        ClientGetDTO updatedClient = clientService.updateClient(newCode, new ClientPostDTO("Pepito",
                 "Perez",
                 "12312312311",
                 "Calle 12223",
                 "pepeperez@email.com",
                 "452335",
-                "Activo"));
+                UserStatus.ACTIVO));
 
         //Se comprueba que ahora el teléfono del usuario no es el que se usó cuando se creó inicialmente
         Assertions.assertNotEquals("12312312312", updatedClient.getPhone());
@@ -102,16 +103,16 @@ public class ClientServiceTest {
     public void getClientTest() throws Exception{
 
         //Para obtener el usuario primero se debe crear
-        ClientDTO clientDTO = new ClientDTO(
+        ClientPostDTO clientPostDTO = new ClientPostDTO(
                 "Pepito",
                 "Alvarez",
                 "12312312312",
                 "Calle 123",
                 "pepe1@email.com",
                 "452335",
-                "Activo");
+                UserStatus.ACTIVO);
 
-        int newCode = clientService.createClient(clientDTO);
+        int newCode = clientService.createClient(clientPostDTO);
 
         //Se llama el servicio para obtener el usuario completo dado su código
         ClientGetDTO clientGetDTO = clientService.getClientDTO(newCode);

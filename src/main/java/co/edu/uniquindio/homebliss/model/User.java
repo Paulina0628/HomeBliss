@@ -27,5 +27,5 @@ public class User implements Serializable {
     private String password;
 
     @Column(nullable = false)
-    private String state;
+    private UserStatus status;
 }

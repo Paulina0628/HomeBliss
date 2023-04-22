@@ -1,6 +1,7 @@
 package co.edu.uniquindio.homebliss.controllers;
 
 import co.edu.uniquindio.homebliss.dto.MessageDTO;
+import co.edu.uniquindio.homebliss.services.interfaces.CloudinaryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
