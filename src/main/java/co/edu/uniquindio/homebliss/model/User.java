@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 @MappedSuperclass
 @Getter @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements Serializable {
 
     @Id
@@ -23,9 +24,9 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
-    private UserStatus status;
+    private UserState state;
 }

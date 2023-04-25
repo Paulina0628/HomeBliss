@@ -1,6 +1,9 @@
 package co.edu.uniquindio.homebliss.repositories;
 
+import co.edu.uniquindio.homebliss.model.Category;
+import co.edu.uniquindio.homebliss.model.Client;
 import co.edu.uniquindio.homebliss.model.Product;
+import co.edu.uniquindio.homebliss.model.State;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -10,10 +13,21 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    @Query("select p from Product p where p.seller.id = :userCode")
-    List<Product> getUserProducts(int userCode);
+    @Query("select p from Product p where :clientCode = p.seller.id")
+    List<Product> findAllBySeller(int clientCode);
 
-    @Query("select p from Product p where p.name like concat( '%', :name, '%' ) and p.isActive = TRUE ")
-    List<Product> getProductByName(String name);
+    @Query("select p from Product p where :category = p.categories")
+    List<Product> findAllByCategories(Category category);
+
+    List<Product> findAllByPriceBetween(float minPrice, float maxPrice);
+
+    @Query("select p from Product p where p.clientFavorite = :client")
+    List<Product> findAllByClientFavorite(Client client);
+
+    @Query("select p from Product p join ProductModerator pM on p.id = pM.product.id where :state = pM.state")
+    List<Product> findAllByState(State state);
+
+    @Query("select p from Product p where p.name like concat( '%', :name, '%' )")
+    List<Product> findAllByName(String name);
 
 }

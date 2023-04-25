@@ -4,6 +4,7 @@ import co.edu.uniquindio.homebliss.model.Client;
 import co.edu.uniquindio.homebliss.model.Moderator;
 import co.edu.uniquindio.homebliss.repositories.ClientRepository;
 import co.edu.uniquindio.homebliss.repositories.ModeratorRepository;
+import co.edu.uniquindio.homebliss.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

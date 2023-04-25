@@ -1,34 +1,37 @@
 package co.edu.uniquindio.homebliss.services.interfaces;
 
-import co.edu.uniquindio.homebliss.dto.ProductDTO;
+import co.edu.uniquindio.homebliss.dto.ProductPostDTO;
 import co.edu.uniquindio.homebliss.dto.ProductGetDTO;
 import co.edu.uniquindio.homebliss.model.Category;
 import co.edu.uniquindio.homebliss.model.Product;
+import co.edu.uniquindio.homebliss.model.ProductState;
 import co.edu.uniquindio.homebliss.model.State;
 
 import java.util.List;
 
 public interface ProductService {
 
-    int createProduct(ProductDTO productDTO) throws Exception;
+    int createProduct(ProductPostDTO productPostDTO) throws Exception;
 
-    int updateProduct(int productCode, ProductDTO productDTO);
+    ProductGetDTO updateProduct(int productCode, ProductPostDTO productPostDTO) throws Exception;
 
-    int updateStock(int productCode, int stock);
+    ProductGetDTO updateStock(int productCode, int stock) throws Exception;
 
-    int updateState(int productCode, State state);
+    ProductGetDTO updateState(int productCode, ProductState state) throws Exception;
 
-    int deleteProduct(int productCode);
+    void deleteProduct(int productCode) throws Exception;
 
-    ProductGetDTO getProduct(int productCode);
+    Product getProduct(int productCode) throws Exception;
 
-    List<ProductGetDTO> getUserProducts(int userCode);
+    ProductGetDTO getProductDTO(int productCode) throws Exception;
+
+    List<ProductGetDTO> getUserProducts(int clientCode) throws Exception;
 
     List<ProductGetDTO> getProductsByCategory(Category category);
 
     List<ProductGetDTO> getProductsByState(State state);
 
-    List<ProductGetDTO> getFavoritesProducts(int userCode);
+    List<ProductGetDTO> getFavoritesProducts(int clientCode) throws Exception;
 
     List<ProductGetDTO> getProductsByName(String name);
 

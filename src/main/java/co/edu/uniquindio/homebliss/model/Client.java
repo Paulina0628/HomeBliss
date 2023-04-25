@@ -13,7 +13,6 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Client extends User implements Serializable {
 
     @Column(length = 50)

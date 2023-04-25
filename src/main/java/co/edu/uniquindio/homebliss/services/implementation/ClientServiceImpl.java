@@ -3,7 +3,7 @@ package co.edu.uniquindio.homebliss.services.implementation;
 import co.edu.uniquindio.homebliss.dto.ClientPostDTO;
 import co.edu.uniquindio.homebliss.dto.ClientGetDTO;
 import co.edu.uniquindio.homebliss.model.Client;
-import co.edu.uniquindio.homebliss.model.UserStatus;
+import co.edu.uniquindio.homebliss.model.UserState;
 import co.edu.uniquindio.homebliss.repositories.ClientRepository;
 import co.edu.uniquindio.homebliss.services.exceptions.AttributeException;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
@@ -35,6 +35,7 @@ public class ClientServiceImpl implements ClientService {
         }
 
         Client client = toClient(clientPostDTO);
+        client.setState(UserState.ACTIVO);
 
         return clientRepository.save(client).getId();
     }
@@ -42,7 +43,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientGetDTO updateClient(int clientCode, ClientPostDTO clientPostDTO) throws Exception {
 
-        if(!validateClient(clientCode)){
+        if(validateClient(clientCode)){
             throw new Exception("El código " + clientCode + " no está asociado a ningún usuario");
         }
 
@@ -56,7 +57,7 @@ public class ClientServiceImpl implements ClientService {
     public void deleteClient(int clientCode) throws Exception {
 
         Client client = getClient(clientCode);
-        client.setStatus(UserStatus.INACTIVO);
+        client.setState(UserState.INACTIVO);
 
         clientRepository.save(client);
     }

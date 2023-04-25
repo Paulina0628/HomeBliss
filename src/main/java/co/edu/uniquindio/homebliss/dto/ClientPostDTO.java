@@ -1,6 +1,6 @@
 package co.edu.uniquindio.homebliss.dto;
 
-import co.edu.uniquindio.homebliss.model.UserStatus;
+import co.edu.uniquindio.homebliss.model.UserState;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -47,5 +47,5 @@ public class ClientPostDTO {
 
     @NotNull(message = "El estado no puede ser null")
     @NotBlank(message = "El estado no puede estar vacía")
-    private UserStatus status;
+    private UserState state;
 }

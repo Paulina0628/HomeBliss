@@ -1,6 +1,9 @@
 package co.edu.uniquindio.homebliss.dto;
 
 import co.edu.uniquindio.homebliss.model.Category;
+import co.edu.uniquindio.homebliss.model.ProductState;
+import co.edu.uniquindio.homebliss.model.Question;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,24 +16,26 @@ import java.util.List;
 @Setter
 public class ProductGetDTO {
 
-    private int code;
-
-    private Boolean state;
-
-    private LocalDateTime limit_date;
+    private int id;
 
     private String name;
 
     private String description;
 
+    private float price;
+
     private int stock;
 
-    private float price;
+    private ProductState state;
+
+    private LocalDateTime limit_date;
 
     private int sellerCode;
 
     private List<String> images;
 
     private List<Category> categories;
+
+    private List<Question> questions;
 
 }

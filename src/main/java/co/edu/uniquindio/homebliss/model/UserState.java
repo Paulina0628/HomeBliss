@@ -1,6 +1,6 @@
 package co.edu.uniquindio.homebliss.model;
 
-public enum UserStatus {
+public enum UserState {
     ACTIVO,
 
     INACTIVO

@@ -19,10 +19,9 @@ import org.springframework.stereotype.Service;
 public class SessionServiceImpl implements SessionService {
 
     @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public TokenDTO login(SessionDTO sessionDTO) {

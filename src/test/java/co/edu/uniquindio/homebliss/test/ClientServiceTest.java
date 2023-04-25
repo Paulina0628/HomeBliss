@@ -2,7 +2,7 @@ package co.edu.uniquindio.homebliss.test;
 
 import co.edu.uniquindio.homebliss.dto.ClientPostDTO;
 import co.edu.uniquindio.homebliss.dto.ClientGetDTO;
-import co.edu.uniquindio.homebliss.model.UserStatus;
+import co.edu.uniquindio.homebliss.model.UserState;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class ClientServiceTest {
                     "Calle 123",
                     "pepe1@email.com",
                     "452335",
-                    UserStatus.ACTIVO);
+                    UserState.ACTIVO);
 
             int code = clientService.createClient(clientPostDTO);
 
@@ -57,20 +57,20 @@ public class ClientServiceTest {
                 "Calle 123",
                 "pepe1@email.com",
                 "452335",
-                UserStatus.ACTIVO);
+                UserState.ACTIVO);
 
         int code = clientService.createClient(clientPostDTO);
 
         //Una vez creado, lo borramos
         clientService.deleteClient(code);
 
-        //Si intentamos buscar un usuario con el codigo del usuario borrado debemos obtener una excepción indicando que ya no existe
-        Assertions.assertThrows(Exception.class, () -> clientService.getClientDTO(code));
+        //Si intentamos buscar un usuario con el codigo del usuario borrado se comprueba que está en estado INACTIVO
+        Assertions.assertEquals(UserState.INACTIVO, clientService.getClient(code).getState());
     }
 
     @Test
     @Sql("classpath:dataset.sql" )
-    public void actualizarUsuarioTest() throws Exception{
+    public void updateClientTest() throws Exception{
 
         //Para actualizar el usuario primero se debe crear
         ClientPostDTO clientPostDTO = new ClientPostDTO(
@@ -79,19 +79,19 @@ public class ClientServiceTest {
                 "12312312312",
                 "Calle 123",
                 "pepe1@email.com",
-                "452335",
-                UserStatus.ACTIVO);
+                "45237735",
+                UserState.ACTIVO);
 
         int newCode = clientService.createClient(clientPostDTO);
 
         //El servicio de actualizar nos retorna el usuario
         ClientGetDTO updatedClient = clientService.updateClient(newCode, new ClientPostDTO("Pepito",
                 "Perez",
-                "12312312311",
+                "123123122",
                 "Calle 12223",
                 "pepeperez@email.com",
-                "452335",
-                UserStatus.ACTIVO));
+                "45772335",
+                UserState.ACTIVO));
 
         //Se comprueba que ahora el teléfono del usuario no es el que se usó cuando se creó inicialmente
         Assertions.assertNotEquals("12312312312", updatedClient.getPhone());
@@ -110,7 +110,7 @@ public class ClientServiceTest {
                 "Calle 123",
                 "pepe1@email.com",
                 "452335",
-                UserStatus.ACTIVO);
+                UserState.ACTIVO);
 
         int newCode = clientService.createClient(clientPostDTO);
 

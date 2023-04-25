@@ -42,7 +42,7 @@ public class Product implements Serializable {
     private int stock;
 
     @NotNull
-    private Boolean isActive;
+    private ProductState state;
 
     @NotNull
     private LocalDateTime created_date;

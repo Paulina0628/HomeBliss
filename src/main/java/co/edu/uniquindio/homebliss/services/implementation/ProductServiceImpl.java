@@ -1,38 +1,37 @@
 package co.edu.uniquindio.homebliss.services.implementation;
 
-import co.edu.uniquindio.homebliss.dto.ProductDTO;
+import co.edu.uniquindio.homebliss.dto.ProductPostDTO;
 import co.edu.uniquindio.homebliss.dto.ProductGetDTO;
-import co.edu.uniquindio.homebliss.model.Category;
-import co.edu.uniquindio.homebliss.model.Product;
-import co.edu.uniquindio.homebliss.model.State;
+import co.edu.uniquindio.homebliss.model.*;
 import co.edu.uniquindio.homebliss.repositories.ProductRepository;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
 import co.edu.uniquindio.homebliss.services.interfaces.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
-    private final ClientService clientService;
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private ClientService clientService;
 
     @Override
-    public int createProduct(ProductDTO productDTO) throws Exception {
-        Product product = new Product();
-        product.setName( productDTO.getName() );
-        product.setDescription( productDTO.getDescription() );
-        product.setStock( productDTO.getStock() );
-        product.setPrice( productDTO.getPrice() );
-        product.setSeller( clientService.getClient( productDTO.getSellerCode() ) );
-        product.setImages(productDTO.getImages() );
-        product.setCategories(productDTO.getCategories());
-        product.setIsActive( false );
+    public int createProduct(ProductPostDTO productPostDTO) throws Exception {
+
+        Product product = toProduct(productPostDTO);
+
+        product.setState(ProductState.INACTIVO);
         product.setCreated_date(LocalDateTime.now());
         product.setLimit_date(LocalDateTime.now().plusDays(60));
 
@@ -40,38 +39,77 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int updateProduct(int productCode, ProductDTO productDTO) {
-        return 0;
+    public ProductGetDTO updateProduct(int productCode, ProductPostDTO productPostDTO) throws Exception {
+
+        if(validateProduct(productCode)){
+            throw new Exception("El código " + productCode + " no está asociado a ningún producto");
+        }
+
+        Product product = toProduct(productPostDTO);
+        product.setId(productCode);
+
+        return toProductDTO(productRepository.save(product));
     }
 
     @Override
-    public int updateStock(int productCode, int stock) {
-        return 0;
+    public ProductGetDTO updateStock(int productCode, int stock) throws Exception {
+        if(validateProduct(productCode)){
+            throw new Exception("El código " + productCode + " no está asociado a ningún producto");
+        }
+
+        Product product = getProduct(productCode);
+        product.setStock(stock);
+
+        return toProductDTO(productRepository.save(product));
     }
 
     @Override
-    public int updateState(int productCode, State state) {
-        return 0;
+    public ProductGetDTO updateState(int productCode, ProductState state) throws Exception {
+        if(validateProduct(productCode)){
+            throw new Exception("El código " + productCode + " no está asociado a ningún producto");
+        }
+
+        Product product = getProduct(productCode);
+        product.setState(state);
+
+        return toProductDTO(productRepository.save(product));
     }
 
     @Override
-    public int deleteProduct(int productCode) {
-        return 0;
+    public void deleteProduct(int productCode) throws Exception {
+        if(validateProduct(productCode)){
+            throw new Exception("El código " + productCode + " no está asociado a ningún producto");
+        }
+
+        Product product = getProduct(productCode);
+        product.setState(ProductState.ELIMINADO);
+
     }
 
     @Override
-    public ProductGetDTO getProduct(int productCode) {
-        return null;
+    public ProductGetDTO getProductDTO(int productCode) throws Exception {
+        return toProductDTO(getProduct(productCode));
     }
 
-    @Override
-    public List<ProductGetDTO> getUserProducts(int userCode) {
+    @Transactional(readOnly = true)
+    public Product getProduct(int productCode) throws Exception {
+        Optional<Product> product = productRepository.findById(productCode);
 
-        List<Product> list = productRepository.getUserProducts(userCode);
+        if(product.isEmpty() ){
+            throw new Exception("El código " + productCode + " no está asociado a ningún producto");
+        }
+        return product.get();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductGetDTO> getUserProducts(int clientCode) throws Exception {
+
+        List<Product> list = productRepository.findAllBySeller(clientCode);
         List<ProductGetDTO> answer = new ArrayList<>();
 
+
         for(Product p : list){
-            answer.add( toDTO(p) );
+            answer.add( toProductDTO(p));
         }
 
         return answer;
@@ -79,26 +117,57 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductGetDTO> getProductsByCategory(Category category) {
-        return null;
+
+        List<Product> list = productRepository.findAllByCategories(category);
+        List<ProductGetDTO> answer = new ArrayList<>();
+
+        for(Product p : list){
+            if(p.getState() == ProductState.ACTIVO) {
+                answer.add(toProductDTO(p));
+            }
+        }
+
+        return answer;
     }
 
     @Override
     public List<ProductGetDTO> getProductsByState(State state) {
-        return null;
+        List<Product> list = productRepository.findAllByState(state);
+        List<ProductGetDTO> answer = new ArrayList<>();
+
+        for(Product p : list){
+            answer.add(toProductDTO(p));
+        }
+
+        return answer;
     }
 
     @Override
-    public List<ProductGetDTO> getFavoritesProducts(int userCode) {
-        return null;
+    public List<ProductGetDTO> getFavoritesProducts(int clientCode) throws Exception {
+
+        Client client = clientService.getClient(clientCode);
+
+        List<Product> list = productRepository.findAllByClientFavorite(client);
+        List<ProductGetDTO> answer = new ArrayList<>();
+
+        for(Product p : list){
+            if(p.getState() == ProductState.ACTIVO) {
+                answer.add(toProductDTO(p));
+            }
+        }
+
+        return answer;
     }
 
     @Override
     public List<ProductGetDTO> getProductsByName(String name) {
-        List<Product> list = productRepository.getProductByName(name);
+        List<Product> list = productRepository.findAllByName(name);
         List<ProductGetDTO> answer = new ArrayList<>();
 
         for(Product p : list){
-            answer.add(toDTO(p));
+            if(p.getState() == ProductState.ACTIVO) {
+                answer.add(toProductDTO(p));
+            }
         }
 
         return answer;
@@ -106,24 +175,53 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductGetDTO> getProductsByPrice(float minPrice, float maxPrice) {
-        return null;
+        List<Product> list = productRepository.findAllByPriceBetween(minPrice, maxPrice);
+        List<ProductGetDTO> answer = new ArrayList<>();
+
+        for(Product p : list){
+            if(p.getState() == ProductState.ACTIVO) {
+                answer.add(toProductDTO(p));
+            }
+        }
+
+        return answer;
     }
-    private ProductGetDTO toDTO(Product product){
+    public boolean validateProduct(int productCode) throws Exception{
+        Optional<Product> product = productRepository.findById(productCode);
+        return product.isEmpty();
+    }
+
+    public ProductGetDTO toProductDTO(Product product){
 
         ProductGetDTO productGetDTO = new ProductGetDTO(
                 product.getId(),
-                product.getIsActive(),
-                product.getLimit_date(),
                 product.getName(),
                 product.getDescription(),
-                product.getStock(),
                 product.getPrice(),
+                product.getStock(),
+                product.getState(),
+                product.getLimit_date(),
                 product.getSeller().getId(),
                 product.getImages(),
-                product.getCategories()
-        );
+                product.getCategories(),
+                product.getQuestions());
 
         return productGetDTO;
+    }
+
+    public Product toProduct(ProductPostDTO productPostDTO) throws Exception {
+
+        Product product = new Product();
+
+        product.setName(productPostDTO.getName());
+        product.setDescription(productPostDTO.getDescription());
+        product.setStock(productPostDTO.getStock());
+        product.setPrice(productPostDTO.getPrice());
+        product.setSeller(clientService.getClient(productPostDTO.getSellerCode()));
+        product.setImages(productPostDTO.getImages());
+        product.setCategories(productPostDTO.getCategories());
+
+        return product;
     }
 
 }

@@ -10,5 +10,6 @@ public interface CloudinaryService {
     Map uploadImage(File file, String folder) throws Exception;
 
     Map deleteImage(String imageId) throws Exception;
+
     File convert(MultipartFile image) throws IOException;
 }

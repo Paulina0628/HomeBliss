@@ -1,7 +1,6 @@
 package co.edu.uniquindio.homebliss.dto;
 
 import co.edu.uniquindio.homebliss.model.Category;
-import jakarta.persistence.Column;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ProductDTO {
+public class ProductPostDTO {
 
     @NotNull(message = "El nombre no puede ser null")
     @NotBlank(message = "El nombre no puede estar vacía")
