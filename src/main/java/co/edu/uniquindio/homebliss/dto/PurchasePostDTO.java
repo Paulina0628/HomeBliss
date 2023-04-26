@@ -19,7 +19,6 @@ public class PurchasePostDTO {
     @PositiveOrZero
     private int clientCode;
 
-    @NotNull(message = "El precio total no puede ser nulo")
     private float totalPrice;
 
     @NotNull(message = "El PaymentMethod no pueden ser null")
