@@ -16,13 +16,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("select p from Product p where :clientCode = p.seller.id")
     List<Product> findAllBySeller(int clientCode);
 
-    @Query("select p from Product p where :category = p.categories")
+    @Query("select p from Product p where :category member of p.categories")
     List<Product> findAllByCategories(Category category);
 
-    List<Product> findAllByPriceBetween(float minPrice, float maxPrice);
+    @Query("select p from Product p where p.price > :minPrice and p.price < :maxPrice")
+    List<Product> findAllByPrice(float minPrice, float maxPrice);
 
-    @Query("select p from Product p where p.clientFavorite = :client")
-    List<Product> findAllByClientFavorite(Client client);
+    @Query("select p from Product p join p.clientFavorite c where :clientCode = c.id")
+    List<Product> findAllByClientFavorite(int clientCode);
 
     @Query("select p from Product p join ProductModerator pM on p.id = pM.product.id where :state = pM.state")
     List<Product> findAllByState(State state);

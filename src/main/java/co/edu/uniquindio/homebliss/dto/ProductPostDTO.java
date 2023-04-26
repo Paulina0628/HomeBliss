@@ -19,7 +19,7 @@ public class ProductPostDTO {
 
     @NotNull(message = "El nombre no puede ser null")
     @NotBlank(message = "El nombre no puede estar vacía")
-    @Length(max = 150, message = "El nombre debe ser de máximo 150 caracteres")
+    @Length(max = 100, message = "El nombre debe ser de máximo 150 caracteres")
     private String name;
     @NotNull(message = "El apellido no puede ser null")
     @NotBlank(message = "El apellido no puede estar vacía")

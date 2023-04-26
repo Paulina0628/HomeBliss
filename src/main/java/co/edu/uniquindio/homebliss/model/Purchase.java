@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,16 +26,14 @@ public class Purchase implements Serializable {
     private int id;
 
     @NotNull
-    @CreationTimestamp
-    private Timestamp created_date;
+    private LocalDateTime created_date;
 
     @NotNull
     @Column(scale = 2)
     private float total_price;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
-    private PaymentMethod payment_method;
+    private String payment_method;
 
     @ManyToOne
     private Client client;

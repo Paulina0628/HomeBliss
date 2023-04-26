@@ -1,14 +1,13 @@
 package co.edu.uniquindio.homebliss.services.interfaces;
 
-import co.edu.uniquindio.homebliss.dto.PurchaseDTO;
-import co.edu.uniquindio.homebliss.dto.PurchaseDetailDTO;
+import co.edu.uniquindio.homebliss.dto.PurchasePostDTO;
 import co.edu.uniquindio.homebliss.dto.PurchaseGetDTO;
 
 import java.util.List;
 
 public interface PurchaseService {
 
-    int createpurchase(PurchaseDTO purchaseDTO);
+    int createpurchase(PurchasePostDTO purchasePostDTO) throws Exception;
 
     PurchaseGetDTO getPurchase(int purchaseCode);
 

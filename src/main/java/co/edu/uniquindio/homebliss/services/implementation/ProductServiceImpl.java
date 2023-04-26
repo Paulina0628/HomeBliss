@@ -145,9 +145,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductGetDTO> getFavoritesProducts(int clientCode) throws Exception {
 
-        Client client = clientService.getClient(clientCode);
-
-        List<Product> list = productRepository.findAllByClientFavorite(client);
+        List<Product> list = productRepository.findAllByClientFavorite(clientCode);
         List<ProductGetDTO> answer = new ArrayList<>();
 
         for(Product p : list){
@@ -175,7 +173,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductGetDTO> getProductsByPrice(float minPrice, float maxPrice) {
-        List<Product> list = productRepository.findAllByPriceBetween(minPrice, maxPrice);
+        List<Product> list = productRepository.findAllByPrice(minPrice, maxPrice);
         List<ProductGetDTO> answer = new ArrayList<>();
 
         for(Product p : list){

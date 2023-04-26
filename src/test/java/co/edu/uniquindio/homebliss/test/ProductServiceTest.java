@@ -221,7 +221,7 @@ public class ProductServiceTest {
         List<ProductGetDTO> products = productService.getUserProducts(1);
 
         //Se imprimen los productos
-        System.out.println(products.toString());
+        System.out.println("NOMBRE: " + products.get(0).getName());
 
     }
 
@@ -234,6 +234,10 @@ public class ProductServiceTest {
         images.add("http://www.google.com/images/imagenasus.png");
         images.add("http://www.google.com/images/imagenasus_original.png");
 
+        List<Category> categories = new ArrayList<>();
+        categories.add(Category.HOGAR);
+        categories.add(Category.TECNOLOGIA);
+
         //Para actualizar el producto primero se debe crear
         ProductPostDTO productPostDTO = new ProductPostDTO(
                 "Sandwichera 4",
@@ -242,7 +246,7 @@ public class ProductServiceTest {
                 60000,
                 1,
                 images,
-                List.of(Category.TECNOLOGIA, Category.HOGAR));
+                categories);
 
         //Se llama el servicio para crear el producto
         int code = productService.createProduct(productPostDTO);
@@ -295,11 +299,39 @@ public class ProductServiceTest {
     @Sql("classpath:dataset.sql")
     public void getProductsByPriceTest() throws Exception{
 
+        //Se crea la colección de imágenes para el producto.
+        List<String> images = new ArrayList<>();
+        images.add("http://www.google.com/images/imagenasus.png");
+        images.add("http://www.google.com/images/imagenasus_original.png");
+
+        //Para actualizar el producto primero se debe crear
+        ProductPostDTO productPostDTO = new ProductPostDTO(
+                "Sandwichera 4",
+                "Sanduchera de 4 slots para ricos sandwiches",
+                6,
+                60000,
+                1,
+                images,
+                List.of(Category.TECNOLOGIA, Category.HOGAR));
+
+        ProductPostDTO productPostDTO2 = new ProductPostDTO(
+                "Sandwichera 8",
+                "Sanduchera de 8 slots para ricos sandwiches",
+                3,
+                170000,
+                1,
+                images,
+                List.of(Category.HOGAR));
+
+        //Se llama el servicio para crear los productos
+        int code = productService.createProduct(productPostDTO);
+        int code2 = productService.createProduct(productPostDTO2);
+
         //Se llama el servicio para obtener los productos favoritos del cliente 1
         List<ProductGetDTO> products = productService.getProductsByPrice(30000, 100000);
 
         //Se imprimen los productos
-        System.out.println(products);
+        System.out.println(products.get(0).getName());
 
     }
 
