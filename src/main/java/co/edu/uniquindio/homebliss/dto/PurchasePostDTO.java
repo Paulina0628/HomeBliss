@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -23,5 +25,13 @@ public class PurchasePostDTO {
     @NotNull(message = "El PaymentMethod no pueden ser null")
     private String paymentMethod;
 
+    @NotNull(message = "Los productos no pueden ser null")
+    private List<Integer> productCode;
+
+    @NotNull(message = "Los productos no pueden ser null")
+    private List<Integer> productAmount;
+
+    @NotNull(message = "Los productos no pueden ser null")
+    private List<Float> productPrice;
 
 }

@@ -1,18 +1,21 @@
 package co.edu.uniquindio.homebliss.services.implementation;
 
+
 import co.edu.uniquindio.homebliss.dto.ProductGetDTO;
 import co.edu.uniquindio.homebliss.dto.PurchasePostDTO;
 import co.edu.uniquindio.homebliss.dto.PurchaseGetDTO;
 import co.edu.uniquindio.homebliss.model.Client;
 import co.edu.uniquindio.homebliss.model.Product;
-import co.edu.uniquindio.homebliss.model.ProductState;
 import co.edu.uniquindio.homebliss.model.Purchase;
+import co.edu.uniquindio.homebliss.model.PurchaseDetail;
 import co.edu.uniquindio.homebliss.repositories.ProductRepository;
 import co.edu.uniquindio.homebliss.repositories.PurchaseRepository;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
+import co.edu.uniquindio.homebliss.services.interfaces.ProductService;
 import co.edu.uniquindio.homebliss.services.interfaces.PurchaseService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +31,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private PurchaseRepository purchaseRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @Autowired
     private ClientService clientService;
@@ -44,26 +47,52 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setTotal_price(purchasePostDTO.getTotalPrice());
         purchase.setPayment_method(purchasePostDTO.getPaymentMethod());
 
+        int code = purchaseRepository.save( purchase ).getId();
+
+        Purchase purchase2 = getPurchase(code);
+        List<PurchaseDetail> purchaseDetails = new ArrayList<>();
+
+        for (int i = 0; i < purchasePostDTO.getProductCode().size(); i++){
+            PurchaseDetail purchaseDetail = new PurchaseDetail();
+            purchaseDetail.setAmount(purchasePostDTO.getProductAmount().get(i));
+            purchaseDetail.setProduct_price(purchasePostDTO.getProductPrice().get(i));
+            purchaseDetail.setPurchase(purchase2);
+            purchaseDetail.setProduct(productService.getProduct(purchasePostDTO.getProductCode().get(i)));
+
+            purchaseDetails.add(purchaseDetail);
+        }
+
+        purchase2.setPurchaseDetails(purchaseDetails);
+
         return purchaseRepository.save( purchase ).getId();
     }
 
     @Override
-    public PurchaseGetDTO getPurchase(int clientCode) {
+    public PurchaseGetDTO getPurchaseDTO(int purchaseCode) throws Exception {
+        return toPurchaseDTO(getPurchase(purchaseCode));
+    }
 
-        List<Purchase> list = purchaseRepository.findAllByUser(clientCode);
-        List<PurchaseGetDTO> answer = new ArrayList<>();
+    @Override
+    public Purchase getPurchase(int purchaseCode) throws Exception {
 
+        Optional<Purchase> purchase = purchaseRepository.findById(purchaseCode);
 
-        for(Purchase p : list){
-            answer.add( toPurchaseDTO(p));
+        if(purchase.isEmpty() ){
+            throw new Exception("El código " + purchaseCode + " no está asociado a ningún producto");
         }
-
-        return answer;
+        return purchase.get();
     }
 
     @Override
     public List<PurchaseGetDTO> getPurchases(int userCode) {
-        return null;
+        List<Purchase> list = purchaseRepository.findAllByUser(userCode);
+        List<PurchaseGetDTO> answer = new ArrayList<>();
+
+        for(Purchase p : list){
+            answer.add(toPurchaseDTO(p));
+        }
+
+        return answer;
     }
 
     public PurchaseGetDTO toPurchaseDTO(Purchase purchase){
