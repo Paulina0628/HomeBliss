@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Getter @Setter
@@ -23,9 +25,8 @@ public class Comment implements Serializable {
     @Lob
     private String message;
 
-    @NotNull
     @CreationTimestamp
-    private Timestamp created_date;
+    private LocalDateTime created_date;
 
     @ManyToOne
     private Client client;

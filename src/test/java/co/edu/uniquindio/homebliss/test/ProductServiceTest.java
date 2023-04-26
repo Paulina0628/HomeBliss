@@ -8,13 +8,16 @@ import co.edu.uniquindio.homebliss.model.Category;
 import co.edu.uniquindio.homebliss.model.ProductState;
 import co.edu.uniquindio.homebliss.model.State;
 import co.edu.uniquindio.homebliss.model.UserState;
+import co.edu.uniquindio.homebliss.repositories.ClientRepository;
+import co.edu.uniquindio.homebliss.repositories.ProductRepository;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
 import co.edu.uniquindio.homebliss.services.interfaces.ProductService;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.swing.*;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Transactional
 public class ProductServiceTest {
 
@@ -31,8 +35,21 @@ public class ProductServiceTest {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @BeforeEach()
+    public void init() throws Exception {
+        this.productRepository.deleteAll();
+        this.clientRepository.deleteAll();
+    }
+
+
     @Test
-    @Sql("classpath:dataset.sql" )
+    @Order(1)
     public void createProductTest() throws Exception {
 
         ClientPostDTO clientPostDTO = new ClientPostDTO("Pepito 1",
@@ -65,13 +82,22 @@ public class ProductServiceTest {
         int productCode = productService.createProduct(productPostDTO);
 
         //Se espera que el servicio retorne el código del nuevo producto
-        Assertions.assertNotEquals(1, productCode);
+        Assertions.assertEquals(1, productCode);
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
+    @Order(2)
     public void deleteProductTest() throws Exception{
 
+        ClientPostDTO clientPostDTO = new ClientPostDTO("Pepito 1",
+                "Alvarez",
+                "12312312312",
+                "Calle 123",
+                "pepe1@email.com",
+                "34331222", UserState.ACTIVO);
+
+        //El servicio del usuario nos retorna el código con el que quedó en la base de datos
+        int sellerCode = clientService.createClient(clientPostDTO);
 
         //Se crea la colección de imágenes para el producto.
         List<String> images = new ArrayList<>();
@@ -84,7 +110,7 @@ public class ProductServiceTest {
                 "Sanduchera de 4 slots para ricos sandwiches",
                 6,
                 60000,
-                1,
+                sellerCode,
                 images,
                 List.of(Category.TECNOLOGIA, Category.HOGAR));
 
@@ -99,8 +125,18 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
+    @Order(2)
     public void updateProductTest() throws Exception{
+
+        ClientPostDTO clientPostDTO = new ClientPostDTO("Pepito 1",
+                "Alvarez",
+                "12312312312",
+                "Calle 123",
+                "pepe1@email.com",
+                "34331222", UserState.ACTIVO);
+
+        //El servicio del usuario nos retorna el código con el que quedó en la base de datos
+        int sellerCode = clientService.createClient(clientPostDTO);
 
         //Se crea la colección de imágenes para el producto.
         List<String> images = new ArrayList<>();
@@ -113,7 +149,7 @@ public class ProductServiceTest {
                 "Sanduchera de 4 slots para ricos sandwiches",
                 6,
                 60000,
-                1,
+                sellerCode,
                 images,
                 List.of(Category.TECNOLOGIA, Category.HOGAR));
 
@@ -126,7 +162,7 @@ public class ProductServiceTest {
                 "Sanduchera de 4 slots para ricos sandwiches",
                 6,
                 100000,
-                1,
+                sellerCode,
                 images,
                 List.of(Category.TECNOLOGIA, Category.HOGAR)));
 
@@ -136,8 +172,18 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
+    @Order(2)
     public void updateStockProductTest() throws Exception{
+
+        ClientPostDTO clientPostDTO = new ClientPostDTO("Pepito 1",
+                "Alvarez",
+                "12312312312",
+                "Calle 123",
+                "pepe1@email.com",
+                "34331222", UserState.ACTIVO);
+
+        //El servicio del usuario nos retorna el código con el que quedó en la base de datos
+        int sellerCode = clientService.createClient(clientPostDTO);
 
         //Se crea la colección de imágenes para el producto.
         List<String> images = new ArrayList<>();
@@ -150,7 +196,7 @@ public class ProductServiceTest {
                 "Sanduchera de 4 slots para ricos sandwiches",
                 6,
                 60000,
-                1,
+                sellerCode,
                 images,
                 List.of(Category.TECNOLOGIA, Category.HOGAR));
 
@@ -166,8 +212,18 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql")
+    @Order(2)
     public void updateStateProductTest() throws Exception{
+
+        ClientPostDTO clientPostDTO = new ClientPostDTO("Pepito 1",
+                "Alvarez",
+                "12312312312",
+                "Calle 123",
+                "pepe1@email.com",
+                "34331222", UserState.ACTIVO);
+
+        //El servicio del usuario nos retorna el código con el que quedó en la base de datos
+        int sellerCode = clientService.createClient(clientPostDTO);
 
         //Se crea la colección de imágenes para el producto.
         List<String> images = new ArrayList<>();
@@ -180,7 +236,7 @@ public class ProductServiceTest {
                 "Sanduchera de 4 slots para ricos sandwiches",
                 6,
                 60000,
-                1,
+                sellerCode,
                 images,
                 List.of(Category.TECNOLOGIA, Category.HOGAR));
 
@@ -196,8 +252,18 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql")
+    @Order(2)
     public void getUserProductsTest() throws Exception{
+
+        ClientPostDTO clientPostDTO = new ClientPostDTO("Pepito 1",
+                "Alvarez",
+                "12312312312",
+                "Calle 123",
+                "pepe1@email.com",
+                "34331222", UserState.ACTIVO);
+
+        //El servicio del usuario nos retorna el código con el que quedó en la base de datos
+        int sellerCode = clientService.createClient(clientPostDTO);
 
         //Se crea la colección de imágenes para el producto.
         List<String> images = new ArrayList<>();
@@ -210,7 +276,7 @@ public class ProductServiceTest {
                 "Sanduchera de 4 slots para ricos sandwiches",
                 6,
                 60000,
-                1,
+                sellerCode,
                 images,
                 List.of(Category.TECNOLOGIA, Category.HOGAR));
 
@@ -218,7 +284,7 @@ public class ProductServiceTest {
         int code = productService.createProduct(productPostDTO);
 
         //Se llama el servicio para obtener los productos del cliente con código 1
-        List<ProductGetDTO> products = productService.getUserProducts(1);
+        List<ProductGetDTO> products = productService.getUserProducts(sellerCode);
 
         //Se imprimen los productos
         System.out.println("NOMBRE: " + products.get(0).getName());
@@ -226,41 +292,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql")
-    public void getProductsByCategoryTest() throws Exception{
-
-        //Se crea la colección de imágenes para el producto.
-        List<String> images = new ArrayList<>();
-        images.add("http://www.google.com/images/imagenasus.png");
-        images.add("http://www.google.com/images/imagenasus_original.png");
-
-        List<Category> categories = new ArrayList<>();
-        categories.add(Category.HOGAR);
-        categories.add(Category.TECNOLOGIA);
-
-        //Para actualizar el producto primero se debe crear
-        ProductPostDTO productPostDTO = new ProductPostDTO(
-                "Sandwichera 4",
-                "Sanduchera de 4 slots para ricos sandwiches",
-                6,
-                60000,
-                1,
-                images,
-                categories);
-
-        //Se llama el servicio para crear el producto
-        int code = productService.createProduct(productPostDTO);
-
-        //Se llama el servicio para obtener los productos de categoría TECNOLOGIA
-        List<ProductGetDTO> products = productService.getProductsByCategory(Category.TECNOLOGIA);
-
-        //Se imprimen los productos
-        System.out.println(products.toString());
-
-    }
-
-    @Test
-    @Sql("classpath:dataset.sql")
+    @Order(2)
     public void getProductsByStateTest() throws Exception{
 
         //Se llama el servicio para obtener los productos de estado SINREVISAR
@@ -272,7 +304,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql")
+    @Order(2)
     public void getFavoritesProductsTest() throws Exception{
 
         //Se llama el servicio para obtener los productos favoritos del cliente 1
@@ -284,7 +316,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql")
+    @Order(2)
     public void getProductsByNameTest() throws Exception{
 
         //Se llama el servicio para obtener los productos favoritos del cliente 1
@@ -296,8 +328,18 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql")
+    @Order(2)
     public void getProductsByPriceTest() throws Exception{
+
+        ClientPostDTO clientPostDTO = new ClientPostDTO("Pepito 1",
+                "Alvarez",
+                "12312312312",
+                "Calle 123",
+                "pepe1@email.com",
+                "34331222", UserState.ACTIVO);
+
+        //El servicio del usuario nos retorna el código con el que quedó en la base de datos
+        int sellerCode = clientService.createClient(clientPostDTO);
 
         //Se crea la colección de imágenes para el producto.
         List<String> images = new ArrayList<>();
@@ -309,8 +351,8 @@ public class ProductServiceTest {
                 "Sandwichera 4",
                 "Sanduchera de 4 slots para ricos sandwiches",
                 6,
-                60000,
-                1,
+                60_000,
+                sellerCode,
                 images,
                 List.of(Category.TECNOLOGIA, Category.HOGAR));
 
@@ -318,8 +360,8 @@ public class ProductServiceTest {
                 "Sandwichera 8",
                 "Sanduchera de 8 slots para ricos sandwiches",
                 3,
-                170000,
-                1,
+                170_000,
+                sellerCode,
                 images,
                 List.of(Category.HOGAR));
 
@@ -331,7 +373,7 @@ public class ProductServiceTest {
         List<ProductGetDTO> products = productService.getProductsByPrice(30000, 100000);
 
         //Se imprimen los productos
-        System.out.println(products.get(0).getName());
+        Assertions.assertEquals(1, products.size());
 
     }
 

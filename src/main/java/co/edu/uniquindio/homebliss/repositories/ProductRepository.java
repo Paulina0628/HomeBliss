@@ -6,8 +6,10 @@ import co.edu.uniquindio.homebliss.model.Product;
 import co.edu.uniquindio.homebliss.model.State;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -16,8 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("select p from Product p where :clientCode = p.seller.id")
     List<Product> findAllBySeller(int clientCode);
 
-    @Query("select p from Product p where :category member of p.categories")
-    List<Product> findAllByCategories(Category category);
+    @Query("select p from Product p where p.categories in :categories")
+    List<Product> findByCategoriesIn(List<Category> categories);
 
     @Query("select p from Product p where p.price > :minPrice and p.price < :maxPrice")
     List<Product> findAllByPrice(float minPrice, float maxPrice);

@@ -6,6 +6,7 @@ import co.edu.uniquindio.homebliss.dto.PurchasePostDTO;
 import co.edu.uniquindio.homebliss.dto.PurchaseGetDTO;
 import co.edu.uniquindio.homebliss.model.Client;
 import co.edu.uniquindio.homebliss.model.Product;
+import co.edu.uniquindio.homebliss.model.ProductState;
 import co.edu.uniquindio.homebliss.model.Purchase;
 import co.edu.uniquindio.homebliss.model.PurchaseDetail;
 import co.edu.uniquindio.homebliss.repositories.ProductRepository;
@@ -37,7 +38,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private ClientService clientService;
 
     @Override
-    public int createpurchase(PurchasePostDTO purchasePostDTO) throws Exception {
+    public int createPurchase(PurchasePostDTO purchasePostDTO) throws Exception {
         Purchase purchase = new Purchase();
 
         Client client = clientService.getClient(purchasePostDTO.getClientCode());
@@ -88,7 +89,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         List<Purchase> list = purchaseRepository.findAllByUser(userCode);
         List<PurchaseGetDTO> answer = new ArrayList<>();
 
-        for(Purchase p : list){
+        for(Purchase p : list) {
             answer.add(toPurchaseDTO(p));
         }
 

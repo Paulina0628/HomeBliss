@@ -14,4 +14,5 @@ public class CommentDTO {
     private int userCode;
 
     private int productCode;
+
 }

@@ -19,7 +19,6 @@ public class ClientServiceTest {
     private ClientService clientService;
 
     @Test
-    @Sql("classpath:dataset.sql")
     public void createClientTest() throws Exception{
 
         try{
@@ -46,7 +45,6 @@ public class ClientServiceTest {
 
 
     @Test
-    @Sql("classpath:dataset.sql" )
     public void deleteClientTest() throws Exception{
 
         //Para eliminar el usuario primero se debe crear
@@ -69,7 +67,6 @@ public class ClientServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
     public void updateClientTest() throws Exception{
 
         //Para actualizar el usuario primero se debe crear
@@ -99,7 +96,6 @@ public class ClientServiceTest {
     }
 
     @Test
-    @Sql("classpath:dataset.sql" )
     public void getClientTest() throws Exception{
 
         //Para obtener el usuario primero se debe crear

@@ -1,14 +1,15 @@
+
+insert into product values (1, 0, '2023-02-02 12:45:56', "Tabla para picar homebliss", '2023-03-24 12:45:56', "Tabla de picar", 75000, 0, 12, 1);
+insert into product values (2, 1, '2023-02-12 12:45:56', "Trituradora con seguridad homebliss", '2023-04-10 12:45:56', "Trituradora", 140000, 0, 7, 2);
+insert into product values (3, 2, '2023-03-01 12:45:56', "Colador retractil lo que lo hace muy fácil de guardar", '2023-03-24 12:45:56', "Colador retractil", 30000, 0, 20, 3);
+insert into product values (4, 3, '2023-03-10 12:45:56', "Licuadora de 4ltrs homebliss, megalicuadora", '2023-03-24 12:45:56', "Mega licuadora", 300000, 1, 4, 4);
+insert into product values (5, 3, '2023-01-14 12:45:56', "Juego de cuchillos en acero inoxidable y diseño minimalista", '2023-03-24 12:45:56', "Juego de cuchillos", 100000, 2, 10, 5);
+
 insert into client values (1, "lorena@email.com", "Lorena", "hola123223", 1, "Calle 3#4", "Lopez", "12312312");
 insert into client values (2, "marta@email.com", "Marta", "olo312233", 1, "Cra 3#4", "Wayne", "12313332");
 insert into client values (3, "pepe@email.com", "Pepe", "aaa12233", 1, "Cra 69B", "Perez", "12311111");
 insert into client values (4, "pedro@email.com", "Pedro", "wwww23123", 1, "Cra 7 cl 2", "Martinez", "23212311");
 insert into client values (5, "Andrea@email.com", "Andrea", "2342342", 1, "Cra 5 #7", "Velasquez", "233212");
-
-/*insert into product values (1, 0, '2023-02-02 12:45:56', "Tabla para picar homebliss", '2023-03-24 12:45:56', "Tabla de picar", 75000, 0, 12, 1);
-insert into product values (2, 1, '2023-02-12 12:45:56', "Trituradora con seguridad homebliss", '2023-04-10 12:45:56', "Trituradora", 140000, 0, 7, 2);
-insert into product values (3, 2, '2023-03-01 12:45:56', "Colador retractil lo que lo hace muy fácil de guardar", '2023-03-24 12:45:56', "Colador retractil", 30000, 0, 20, 3);
-insert into product values (4, 3, '2023-03-10 12:45:56', "Licuadora de 4ltrs homebliss, megalicuadora", '2023-03-24 12:45:56', "Mega licuadora", 300000, 1, 4, 4);
-insert into product values (5, 3, '2023-01-14 12:45:56', "Juego de cuchillos en acero inoxidable y diseño minimalista", '2023-03-24 12:45:56', "Juego de cuchillos", 100000, 2, 10, 5);
 
 insert into client_favorites values (1, 1);
 insert into client_favorites values (2, 2);
@@ -24,4 +25,4 @@ insert into product_moderator values(1, '2023-02-03', "Ta todo en orden", 2, 1, 
 insert into product_moderator values(2, '2023-02-13', "No tiene imagenes", 3, 2, 2);
 insert into product_moderator values(3, '2023-03-02', "", 1, 3, 3);
 insert into product_moderator values(4, '2023-03-11', "Ta todo en orden", 2, 1, 4);
-insert into product_moderator values(5, '2023-01-15', "Ta todo en orden", 2, 2, 5);*/
+insert into product_moderator values(5, '2023-01-15', "Ta todo en orden", 2, 2, 5);

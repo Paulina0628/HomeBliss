@@ -43,7 +43,7 @@ public class ProductPostDTO {
     @NotNull(message = "Las imagenes no pueden ser null")
     private List<String> images;
 
-
     @NotNull(message = "Las categorías no pueden ser null")
     private List<Category> categories;
+
 }

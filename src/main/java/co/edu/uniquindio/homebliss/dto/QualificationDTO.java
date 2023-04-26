@@ -1,23 +1,18 @@
 package co.edu.uniquindio.homebliss.dto;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
-@Setter
-public class QualificationDTO {
+public class QualificationDTO extends CommentDTO {
 
    @NotNull
-   private String tittle;
+   private String title;
 
-   @NotNull
-   private Integer clientId;
-
-   @NotNull
-   private Integer productId;
+   public QualificationDTO(String message, int userCode, int productCode, String title) {
+      super(message, userCode, productCode);
+      this.title = title;
+   }
 
 }
 

@@ -13,18 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    private final ClientService clientService;
 
     @Autowired
-    private ClientService clientService;
+    public ProductServiceImpl(ProductRepository productRepository, ClientService clientService) {
+        this.productRepository = productRepository;
+        this.clientService = clientService;
+    }
 
     @Override
     public int createProduct(ProductPostDTO productPostDTO) throws Exception {
@@ -83,6 +87,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = getProduct(productCode);
         product.setState(ProductState.ELIMINADO);
+        productRepository.save(product);
 
     }
 
@@ -118,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductGetDTO> getProductsByCategory(Category category) {
 
-        List<Product> list = productRepository.findAllByCategories(category);
+        List<Product> list = productRepository.findByCategoriesIn(List.of(category));
         List<ProductGetDTO> answer = new ArrayList<>();
 
         for(Product p : list){
@@ -177,9 +182,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductGetDTO> answer = new ArrayList<>();
 
         for(Product p : list){
-            if(p.getState() == ProductState.ACTIVO) {
-                answer.add(toProductDTO(p));
-            }
+            answer.add(toProductDTO(p));
         }
 
         return answer;

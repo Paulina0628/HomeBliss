@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PurchaseService {
 
-    int createpurchase(PurchasePostDTO purchasePostDTO) throws Exception;
+    int createPurchase(PurchasePostDTO purchasePostDTO) throws Exception;
 
     Purchase getPurchase(int purchaseCode) throws Exception;
 

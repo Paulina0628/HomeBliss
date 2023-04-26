@@ -8,17 +8,15 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
-public class QuestionDTO {
+public class QuestionDTO extends CommentDTO {
 
     @NotNull
     private String answer;
 
-    @NotNull
-    private Integer clientId;
-
-    @NotNull
-    private Integer productId;
+    public QuestionDTO(String message, int userCode, int productCode, String answer) {
+        super(message, userCode, productCode);
+        this.answer = answer;
+    }
 
 }
