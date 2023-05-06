@@ -1,4 +1,4 @@
 package co.edu.uniquindio.homebliss.dto;
 
-public class CommentGetDTO {
+public class CommentGetDTO extends CommentDTO{
 }

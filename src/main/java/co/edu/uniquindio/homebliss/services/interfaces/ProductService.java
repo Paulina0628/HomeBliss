@@ -37,4 +37,6 @@ public interface ProductService {
 
     List<ProductGetDTO> getProductsByPrice(float minPrice, float maxPrice);
 
+    List<ProductGetDTO> getProducts ();
+
 }

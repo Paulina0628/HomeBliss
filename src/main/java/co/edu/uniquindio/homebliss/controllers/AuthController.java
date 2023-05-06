@@ -23,6 +23,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<MessageDTO> login(@Valid @RequestBody SessionDTO loginUser) {
+        System.out.println("ENTRA :)");
         return ResponseEntity.status(HttpStatus.OK).body( new MessageDTO(HttpStatus.OK, false,
                 sessionService.login(loginUser)) );
     }

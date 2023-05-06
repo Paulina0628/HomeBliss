@@ -48,12 +48,12 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setTotal_price(purchasePostDTO.getTotalPrice());
         purchase.setPayment_method(purchasePostDTO.getPaymentMethod());
 
-        int code = purchaseRepository.save( purchase ).getId();
+        int code = purchaseRepository.save(purchase).getId();
 
         Purchase purchase2 = getPurchase(code);
         List<PurchaseDetail> purchaseDetails = new ArrayList<>();
 
-        for (int i = 0; i < purchasePostDTO.getProductCode().size(); i++){
+        for (int i = 0; i < purchasePostDTO.getProductCode().size(); i++) {
             PurchaseDetail purchaseDetail = new PurchaseDetail();
             purchaseDetail.setAmount(purchasePostDTO.getProductAmount().get(i));
             purchaseDetail.setProduct_price(purchasePostDTO.getProductPrice().get(i));
@@ -65,7 +65,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         purchase2.setPurchaseDetails(purchaseDetails);
 
-        return purchaseRepository.save( purchase ).getId();
+        return purchaseRepository.save(purchase).getId();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         Optional<Purchase> purchase = purchaseRepository.findById(purchaseCode);
 
-        if(purchase.isEmpty() ){
+        if (purchase.isEmpty()) {
             throw new Exception("El código " + purchaseCode + " no está asociado a ningún producto");
         }
         return purchase.get();
@@ -89,14 +89,34 @@ public class PurchaseServiceImpl implements PurchaseService {
         List<Purchase> list = purchaseRepository.findAllByUser(userCode);
         List<PurchaseGetDTO> answer = new ArrayList<>();
 
-        for(Purchase p : list) {
+        for (Purchase p : list) {
             answer.add(toPurchaseDTO(p));
         }
 
         return answer;
     }
 
-    public PurchaseGetDTO toPurchaseDTO(Purchase purchase){
+    @Override
+    public List<PurchaseGetDTO> getListAllPurchases() {
+        List<Purchase> list = purchaseRepository.findAll();
+        List<PurchaseGetDTO> answer = new ArrayList<>();
+        for (Purchase p : list) {
+            answer.add(toPurchaseDTO(p));
+        }
+        return answer;
+    }
+
+    @Override
+    public void deletePurchase(int code) throws Exception {
+        Purchase purchase = purchaseRepository.findById(code).orElse(null);
+        if (purchase == null) {
+            throw new Exception("La compra no existe");
+        } else {
+            purchaseRepository.delete(purchase);
+        }
+    }
+
+    public PurchaseGetDTO toPurchaseDTO(Purchase purchase) {
 
         PurchaseGetDTO purchaseGetDTO = new PurchaseGetDTO(purchase.getId(),
                 purchase.getClient().getId(),

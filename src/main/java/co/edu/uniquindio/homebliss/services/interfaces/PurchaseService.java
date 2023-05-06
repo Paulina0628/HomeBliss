@@ -16,4 +16,8 @@ public interface PurchaseService {
 
     List<PurchaseGetDTO> getPurchases(int userCode);
 
+    List<PurchaseGetDTO> getListAllPurchases();
+
+    void deletePurchase (int code) throws Exception;
+
 }

@@ -187,6 +187,19 @@ public class ProductServiceImpl implements ProductService {
 
         return answer;
     }
+
+    @Override
+    public List<ProductGetDTO> getProducts() {
+        List<Product> list = productRepository.findAll();
+        List<ProductGetDTO> answer = new ArrayList<>();
+        for(Product p : list){
+            if(p.getState() == ProductState.ACTIVO) {
+                answer.add(toProductDTO(p));
+            }
+        }
+        return answer;
+    }
+
     public boolean validateProduct(int productCode) throws Exception{
         Optional<Product> product = productRepository.findById(productCode);
         return product.isEmpty();
