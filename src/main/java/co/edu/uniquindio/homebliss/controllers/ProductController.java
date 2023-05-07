@@ -40,9 +40,6 @@ public class ProductController {
     @PostMapping("/register")
     public ResponseEntity<MessageDTO> register(@Valid @RequestBody ProductPostDTO product) throws Exception {
 
-        List<String> listImages = new ArrayList<>();
-
-
         productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageDTO(HttpStatus.CREATED,
                 false, "Producto creado correctamente"));

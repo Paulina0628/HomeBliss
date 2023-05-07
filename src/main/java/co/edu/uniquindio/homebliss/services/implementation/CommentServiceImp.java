@@ -8,11 +8,13 @@ import co.edu.uniquindio.homebliss.repositories.CommentRepository;
 import co.edu.uniquindio.homebliss.repositories.ProductRepository;
 import co.edu.uniquindio.homebliss.services.interfaces.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CommentServiceImp implements CommentService {
 
     @Autowired
@@ -58,11 +60,7 @@ public class CommentServiceImp implements CommentService {
      * @return
      */
     private CommentGetDTO toCommentDTO(Comment comment) {
-        CommentGetDTO commentGetDTO = new CommentGetDTO();
-        commentGetDTO.setId(comment.getId());
-        commentGetDTO.setProductCode(comment.getProduct().getId());
-        commentGetDTO.setUserCode(comment.getClient().getId());
-        commentGetDTO.setMessage(comment.getMessage());
+        CommentGetDTO commentGetDTO = new CommentGetDTO(comment.getId(),comment.getMessage(),comment.getClient().getId(),comment.getProduct().getId());
         return commentGetDTO;
     }
 

@@ -8,7 +8,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-@NoArgsConstructor
 public class CommentDTO {
 
     private  int id;
@@ -19,4 +18,10 @@ public class CommentDTO {
 
     private int productCode;
 
+
+    public CommentDTO(String message, int userCode, int productCode) {
+        this.message = message;
+        this.productCode = productCode;
+        this.userCode = userCode;
+    }
 }
