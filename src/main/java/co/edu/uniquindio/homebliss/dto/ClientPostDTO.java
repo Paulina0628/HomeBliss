@@ -42,10 +42,8 @@ public class ClientPostDTO {
 
     @NotNull(message = "La contraseña no puede ser null")
     @NotBlank(message = "La contraseña no puede estar vacía")
-    @Length(min = 7, max = 50, message = "La contraseña debe ser de máximo 50 caracteres")
+    @Length(min = 7, max = 50, message = "La contraseña debe ser de mínimo 7 caracteres y máximo 50 caracteres")
     private String password;
 
-    @NotNull(message = "El estado no puede ser null")
-    @NotBlank(message = "El estado no puede estar vacía")
     private UserState state;
 }

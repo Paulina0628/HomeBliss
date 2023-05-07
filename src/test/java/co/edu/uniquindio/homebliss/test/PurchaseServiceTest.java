@@ -41,7 +41,7 @@ public class PurchaseServiceTest {
                 "Alvarez",
                 "12312312312",
                 "Calle 123",
-                "pepe1@email.com",
+                "jpzh315@gmail.com",
                 "34331222", UserState.ACTIVO);
 
         //El servicio del usuario nos retorna el código con el que quedó en la base de datos

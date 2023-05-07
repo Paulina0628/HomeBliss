@@ -39,13 +39,13 @@ public class ProductServiceImpl implements ProductService {
         product.setCreated_date(LocalDateTime.now());
         product.setLimit_date(LocalDateTime.now().plusDays(60));
 
-        return productRepository.save( product ).getId();
+        return productRepository.save(product).getId();
     }
 
     @Override
     public ProductGetDTO updateProduct(int productCode, ProductPostDTO productPostDTO) throws Exception {
 
-        if(validateProduct(productCode)){
+        if (validateProduct(productCode)) {
             throw new Exception("El código " + productCode + " no está asociado a ningún producto");
         }
 
@@ -56,8 +56,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product update(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
     public ProductGetDTO updateStock(int productCode, int stock) throws Exception {
-        if(validateProduct(productCode)){
+        if (validateProduct(productCode)) {
             throw new Exception("El código " + productCode + " no está asociado a ningún producto");
         }
 
@@ -69,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductGetDTO updateState(int productCode, ProductState state) throws Exception {
-        if(validateProduct(productCode)){
+        if (validateProduct(productCode)) {
             throw new Exception("El código " + productCode + " no está asociado a ningún producto");
         }
 
@@ -81,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(int productCode) throws Exception {
-        if(validateProduct(productCode)){
+        if (validateProduct(productCode)) {
             throw new Exception("El código " + productCode + " no está asociado a ningún producto");
         }
 
@@ -100,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
     public Product getProduct(int productCode) throws Exception {
         Optional<Product> product = productRepository.findById(productCode);
 
-        if(product.isEmpty() ){
+        if (product.isEmpty()) {
             throw new Exception("El código " + productCode + " no está asociado a ningún producto");
         }
         return product.get();
@@ -113,8 +118,8 @@ public class ProductServiceImpl implements ProductService {
         List<ProductGetDTO> answer = new ArrayList<>();
 
 
-        for(Product p : list){
-            answer.add( toProductDTO(p));
+        for (Product p : list) {
+            answer.add(toProductDTO(p));
         }
 
         return answer;
@@ -126,8 +131,8 @@ public class ProductServiceImpl implements ProductService {
         List<Product> list = productRepository.findByCategoriesIn(List.of(category));
         List<ProductGetDTO> answer = new ArrayList<>();
 
-        for(Product p : list){
-            if(p.getState() == ProductState.ACTIVO) {
+        for (Product p : list) {
+            if (p.getState() == ProductState.ACTIVO) {
                 answer.add(toProductDTO(p));
             }
         }
@@ -140,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> list = productRepository.findAllByState(state);
         List<ProductGetDTO> answer = new ArrayList<>();
 
-        for(Product p : list){
+        for (Product p : list) {
             answer.add(toProductDTO(p));
         }
 
@@ -153,8 +158,8 @@ public class ProductServiceImpl implements ProductService {
         List<Product> list = productRepository.findAllByClientFavorite(clientCode);
         List<ProductGetDTO> answer = new ArrayList<>();
 
-        for(Product p : list){
-            if(p.getState() == ProductState.ACTIVO) {
+        for (Product p : list) {
+            if (p.getState() == ProductState.ACTIVO) {
                 answer.add(toProductDTO(p));
             }
         }
@@ -167,8 +172,8 @@ public class ProductServiceImpl implements ProductService {
         List<Product> list = productRepository.findAllByName(name);
         List<ProductGetDTO> answer = new ArrayList<>();
 
-        for(Product p : list){
-            if(p.getState() == ProductState.ACTIVO) {
+        for (Product p : list) {
+            if (p.getState() == ProductState.ACTIVO) {
                 answer.add(toProductDTO(p));
             }
         }
@@ -181,18 +186,31 @@ public class ProductServiceImpl implements ProductService {
         List<Product> list = productRepository.findAllByPrice(minPrice, maxPrice);
         List<ProductGetDTO> answer = new ArrayList<>();
 
-        for(Product p : list){
+        for (Product p : list) {
             answer.add(toProductDTO(p));
         }
 
         return answer;
     }
-    public boolean validateProduct(int productCode) throws Exception{
+
+    @Override
+    public List<ProductGetDTO> getProducts() {
+        List<Product> list = productRepository.findAll();
+        List<ProductGetDTO> answer = new ArrayList<>();
+        for (Product p : list) {
+            if (p.getState() == ProductState.ACTIVO) {
+                answer.add(toProductDTO(p));
+            }
+        }
+        return answer;
+    }
+
+    public boolean validateProduct(int productCode) throws Exception {
         Optional<Product> product = productRepository.findById(productCode);
         return product.isEmpty();
     }
 
-    public ProductGetDTO toProductDTO(Product product){
+    public ProductGetDTO toProductDTO(Product product) {
 
         ProductGetDTO productGetDTO = new ProductGetDTO(
                 product.getId(),

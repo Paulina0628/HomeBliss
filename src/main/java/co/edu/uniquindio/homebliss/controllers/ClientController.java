@@ -51,6 +51,4 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.OK).body( new MessageDTO(HttpStatus.OK, false,
                 clientService.updateClient(code, client)));
     }
-
-
 }

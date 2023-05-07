@@ -19,6 +19,8 @@ public interface ProductService {
 
     ProductGetDTO updateState(int productCode, ProductState state) throws Exception;
 
+    Product update (Product product);
+
     void deleteProduct(int productCode) throws Exception;
 
     Product getProduct(int productCode) throws Exception;
@@ -36,5 +38,7 @@ public interface ProductService {
     List<ProductGetDTO> getProductsByName(String name);
 
     List<ProductGetDTO> getProductsByPrice(float minPrice, float maxPrice);
+
+    List<ProductGetDTO> getProducts ();
 
 }
