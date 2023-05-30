@@ -3,12 +3,16 @@ package co.edu.uniquindio.homebliss.controllers;
 import co.edu.uniquindio.homebliss.dto.ClientGetDTO;
 import co.edu.uniquindio.homebliss.dto.ClientPostDTO;
 import co.edu.uniquindio.homebliss.dto.MessageDTO;
+import co.edu.uniquindio.homebliss.model.User;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
+import co.edu.uniquindio.homebliss.services.interfaces.SessionService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +25,14 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private SessionService sessionService;
+
     @GetMapping
     public List<ClientGetDTO> list() {
         return clientService.getClients();
     }
+
 
     @GetMapping("/{code}")
     public ResponseEntity<MessageDTO> get(@PathVariable int code) throws Exception {

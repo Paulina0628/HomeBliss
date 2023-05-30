@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface ModeratorRepository extends JpaRepository<Client, Integer> {
+public interface ModeratorRepository extends JpaRepository<Moderator, Integer> {
 
     @Query("select m from Moderator m where m.email = :email")
     Optional<Moderator> findByEmail(String email);

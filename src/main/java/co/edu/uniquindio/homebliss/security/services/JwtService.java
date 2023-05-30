@@ -23,6 +23,8 @@ public class JwtService {
     private long jwtExpiration;
     @Value("${jwt.refresh_expiration}")
     private long refreshExpiration;
+
+
     public String generateToken(UserDetails userDetails) {
         return buildToken(new HashMap<>(), userDetails, jwtExpiration);
     }

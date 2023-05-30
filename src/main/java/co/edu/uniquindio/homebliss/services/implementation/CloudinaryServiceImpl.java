@@ -16,12 +16,14 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class CloudinaryServiceImpl implements CloudinaryService {
+
     private Cloudinary cloudinary;
+
     public CloudinaryServiceImpl(){
         Map<String, String> config = new HashMap<>();
-        config.put("cloud_name", "Homebliss");
-        config.put("api_key", "421142873741933");
-        config.put("api_secret", "u3HWPpcanAx8KJRE3pI3Bt_oYtU");
+        config.put("cloud_name", "dfu2grlnn");
+        config.put("api_key", "388925879959338");
+        config.put("api_secret", "y7gv5Nk0MKGgduSCbYI9y8qEqsk");
         cloudinary = new Cloudinary(config);
     }
     @Override

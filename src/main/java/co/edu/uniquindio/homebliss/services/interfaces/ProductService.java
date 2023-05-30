@@ -1,5 +1,6 @@
 package co.edu.uniquindio.homebliss.services.interfaces;
 
+import co.edu.uniquindio.homebliss.dto.ProductByClientGetDTO;
 import co.edu.uniquindio.homebliss.dto.ProductPostDTO;
 import co.edu.uniquindio.homebliss.dto.ProductGetDTO;
 import co.edu.uniquindio.homebliss.model.Category;
@@ -31,7 +32,7 @@ public interface ProductService {
 
     List<ProductGetDTO> getProductsByCategory(Category category);
 
-    List<ProductGetDTO> getProductsByState(State state);
+    List<ProductGetDTO> getProductsByClient(int clientCode);
 
     List<ProductGetDTO> getFavoritesProducts(int clientCode) throws Exception;
 
@@ -40,5 +41,11 @@ public interface ProductService {
     List<ProductGetDTO> getProductsByPrice(float minPrice, float maxPrice);
 
     List<ProductGetDTO> getProducts ();
+
+    List<ProductGetDTO> getProductsByCategory(String category, String query);
+
+    ProductByClientGetDTO getProductByClient(int clientCode, int productCode);
+
+    List<ProductGetDTO> getProductsByState(State state);
 
 }

@@ -2,6 +2,7 @@ package co.edu.uniquindio.homebliss.controllers.exceptions;
 
 import co.edu.uniquindio.homebliss.dto.MessageDTO;
 import co.edu.uniquindio.homebliss.services.exceptions.AttributeException;
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,6 +21,13 @@ public class GlobalExceptions {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( new
                 MessageDTO(HttpStatus.BAD_REQUEST, true, "Datos de autenticación incorrectos") );
     }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<MessageDTO> generalException(ValidationException e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( new
+                MessageDTO(HttpStatus.INTERNAL_SERVER_ERROR, true, e.getMessage()) );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MessageDTO> generalException(Exception e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( new

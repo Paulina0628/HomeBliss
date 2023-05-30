@@ -6,6 +6,8 @@ import co.edu.uniquindio.homebliss.repositories.ClientRepository;
 import co.edu.uniquindio.homebliss.repositories.ModeratorRepository;
 import co.edu.uniquindio.homebliss.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,10 +18,14 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
+
     @Autowired
     private ClientRepository clientRepository;
+
     @Autowired
     private ModeratorRepository moderatorRepository;
+
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Client> client = clientRepository.findByEmail(email);

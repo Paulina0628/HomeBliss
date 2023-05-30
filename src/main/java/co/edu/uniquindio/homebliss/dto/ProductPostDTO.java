@@ -26,18 +26,13 @@ public class ProductPostDTO {
     @Lob
     private String description;
 
-    @NotNull(message = "Las unidades en stock no puede ser null")
-    @NotBlank(message = "Las unidades en stock no puede estar vacía")
     @PositiveOrZero
     private int stock;
 
-    @NotNull(message = "El precio no puede ser null")
-    @NotBlank(message = "El precio no puede estar vacío")
     @PositiveOrZero
     private float price;
 
     @NotNull(message = "El código del vendedor no puede ser null")
-    @NotBlank(message = "El código del vendedor no puede estar vací0")
     private int sellerCode;
 
     @NotNull(message = "Las imagenes no pueden ser null")

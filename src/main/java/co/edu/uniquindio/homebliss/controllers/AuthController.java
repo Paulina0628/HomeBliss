@@ -1,8 +1,7 @@
 package co.edu.uniquindio.homebliss.controllers;
 
-import co.edu.uniquindio.homebliss.dto.ClientPostDTO;
-import co.edu.uniquindio.homebliss.dto.MessageDTO;
-import co.edu.uniquindio.homebliss.dto.SessionDTO;
+import co.edu.uniquindio.homebliss.dto.*;
+import co.edu.uniquindio.homebliss.model.User;
 import co.edu.uniquindio.homebliss.services.interfaces.ClientService;
 import co.edu.uniquindio.homebliss.services.interfaces.SessionService;
 import jakarta.validation.Valid;
@@ -21,6 +20,13 @@ public class AuthController {
 
     private final SessionService sessionService;
 
+    @GetMapping("/me")
+    public ResponseEntity<MessageDTO<UserDTO>> me() throws Exception {
+        User user = sessionService.getCurrentUser();
+        UserDTO dto = new UserDTO(user);
+        return ResponseEntity.status(HttpStatus.OK).body( new MessageDTO(HttpStatus.OK, false, dto));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<MessageDTO> login(@Valid @RequestBody SessionDTO loginUser) {
         return ResponseEntity.status(HttpStatus.OK).body( new MessageDTO(HttpStatus.OK, false,
@@ -32,4 +38,5 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageDTO(HttpStatus.CREATED,
                 false, "Cliente creado correctamente"));
     }
+
 }
