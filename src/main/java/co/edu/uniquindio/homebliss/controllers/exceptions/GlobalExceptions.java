@@ -22,14 +22,9 @@ public class GlobalExceptions {
                 MessageDTO(HttpStatus.BAD_REQUEST, true, "Datos de autenticación incorrectos") );
     }
 
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<MessageDTO> generalException(ValidationException e){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( new
-                MessageDTO(HttpStatus.INTERNAL_SERVER_ERROR, true, e.getMessage()) );
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MessageDTO> generalException(Exception e){
+        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( new
                 MessageDTO(HttpStatus.INTERNAL_SERVER_ERROR, true, e.getMessage()) );
     }
